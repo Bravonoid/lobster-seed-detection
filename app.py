@@ -21,13 +21,14 @@ def draw(image, prediction):
 
     # Draw the rectangle
     draw = ImageDraw.Draw(image)
+
     draw.rectangle(
         [
             (x_center - w / 2, y_center - h / 2),
             (x_center + w / 2, y_center + h / 2),
         ],
         width=3,
-        outline=(0, 0, 255),
+        outline=(255, 0, 0),
     )
 
     return image
@@ -49,24 +50,33 @@ def main():
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
+
         st.image(image, caption="Uploaded Image", use_column_width=True)
 
         # Convert image to string
-        image = np.array(image.convert("RGB"))
+        image_arr = np.array(image.convert("RGB"))
 
         # Predict
-        predictions = model.predict(image, confidence=CONFIDENCE, overlap=OVERLAP)
+        try:
+            predictions = model.predict(
+                image_arr, confidence=CONFIDENCE, overlap=OVERLAP
+            )
 
-        # Draw
-        image = Image.open("image.jpg")
-        for prediction in predictions:
-            image = draw(image, prediction)
+            # Draw
+            image = Image.open(uploaded_file)
+            for prediction in predictions:
+                image = draw(image, prediction)
 
-        # Show
-        st.image(image, caption="Result", use_column_width=True)
+            # Show
+            st.image(image, caption="Result", use_column_width=True)
 
-        # Display total number of lobsters
-        st.header(f"Total number of lobsters: {len(predictions)}")
+            # Display total number of lobsters
+            st.header(f"Total number of lobsters: {len(predictions)}")
+
+        # Handle payload too large error
+        except Exception as e:
+            if "Payload Too Large" in str(e):
+                st.error("Image too large. Please upload an image less than 3MB.")
 
 
 if __name__ == "__main__":
