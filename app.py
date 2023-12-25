@@ -30,15 +30,6 @@ def draw(image, prediction):
         outline=(0, 0, 255),
     )
 
-    # Draw the text
-    font = ImageFont.truetype("arial.ttf", 20)
-    draw.text(
-        (x_center - w / 2, y_center - h / 2 - 20),
-        prediction["class"],
-        font=font,
-        fill=(0, 0, 255),
-    )
-
     return image
 
 
