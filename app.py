@@ -63,12 +63,8 @@ def main():
         # Convert image to string
         image = np.array(image.convert("RGB"))
 
-        # Save the image to the local
-        image = Image.fromarray(image)
-        image.save("image.jpg")
-
         # Predict
-        predictions = model.predict("image.jpg", confidence=CONFIDENCE, overlap=OVERLAP)
+        predictions = model.predict(image, confidence=CONFIDENCE, overlap=OVERLAP)
 
         # Draw
         image = Image.open("image.jpg")
