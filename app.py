@@ -34,7 +34,7 @@ def draw(image, prediction):
 
 
 def main():
-    st.title("Real-to-Comic Image Translator")
+    st.title("Lobster Seed Detection")
 
     # Choose the mode
     mode = st.sidebar.selectbox("Choose the mode", ("Upload", "Camera"))
