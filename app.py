@@ -58,12 +58,10 @@ def main():
 
         # Predict
         try:
-            predictions = model.predict(
-                image, confidence=CONFIDENCE, overlap=OVERLAP
-            )
+            predictions = model.predict(image, confidence=CONFIDENCE, overlap=OVERLAP)
 
             # Draw
-            image = Image.open(image)
+            image = Image.open(uploaded_file)
             for prediction in predictions:
                 image = draw(image, prediction)
 
