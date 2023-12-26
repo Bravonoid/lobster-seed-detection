@@ -54,16 +54,16 @@ def main():
         st.image(image, caption="Uploaded Image", use_column_width=True)
 
         # Convert image to string
-        image_arr = np.array(image.convert("RGB"))
+        image = np.array(image.convert("RGB"))
 
         # Predict
         try:
             predictions = model.predict(
-                image_arr, confidence=CONFIDENCE, overlap=OVERLAP
+                image, confidence=CONFIDENCE, overlap=OVERLAP
             )
 
             # Draw
-            image = Image.open(uploaded_file)
+            image = Image.open(image)
             for prediction in predictions:
                 image = draw(image, prediction)
 
