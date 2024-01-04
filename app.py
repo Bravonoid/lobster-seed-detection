@@ -1,10 +1,10 @@
 from roboflow import Roboflow
 import streamlit as st
-from PIL import Image, ImageOps, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 import numpy as np
 
 # Model
-rf = Roboflow(api_key="bSFRHLXDjZUN9FuQw9qt")
+rf = Roboflow(api_key=st.secrets["roboflow"]["apikey"])
 project = rf.workspace().project("lobster-seed-detection")
 model = project.version(1).model
 
