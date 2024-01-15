@@ -2,6 +2,8 @@ from roboflow import Roboflow
 import streamlit as st
 from PIL import Image, ImageDraw
 import numpy as np
+from streamlit_drawable_canvas import st_canvas
+import pandas as pd
 
 # Model
 rf = Roboflow(api_key=st.secrets["roboflow"]["apikey"])
@@ -51,30 +53,56 @@ def main():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
 
-        st.image(image, caption="Uploaded Image", use_column_width=True)
-
         # Convert image to string
         image = np.array(image.convert("RGB"))
 
-        # Predict
-        try:
-            predictions = model.predict(image, confidence=CONFIDENCE, overlap=OVERLAP)
+        with st.spinner("Predicting..."):
+            # Predict
+            try:
+                predictions = model.predict(
+                    image, confidence=CONFIDENCE, overlap=OVERLAP
+                )
 
-            # Draw
-            image = Image.open(uploaded_file)
-            for prediction in predictions:
-                image = draw(image, prediction)
+                # Draw
+                image = Image.open(uploaded_file)
+                for prediction in predictions:
+                    image = draw(image, prediction)
 
-            # Show
-            st.image(image, caption="Result", use_column_width=True)
+            # Handle payload too large error
+            except Exception as e:
+                if "Payload Too Large" in str(e):
+                    st.error("Image too large. Please upload an image less than 3MB.")
 
-            # Display total number of lobsters
-            st.header(f"Total number of lobsters: {len(predictions)}")
+        # Create a canvas component
+        canvas_result = st_canvas(
+            fill_color="",
+            stroke_width=2,
+            stroke_color="#ffffff",
+            background_image=image,
+            update_streamlit=False,
+            drawing_mode="rect",
+            point_display_radius=1,
+            key="canvas",
+        )
 
-        # Handle payload too large error
-        except Exception as e:
-            if "Payload Too Large" in str(e):
-                st.error("Image too large. Please upload an image less than 3MB.")
+        total_manual = 0
+        total_pred = len(predictions)
+
+        if canvas_result.json_data is not None:
+            objects = pd.json_normalize(
+                canvas_result.json_data["objects"]
+            )  # need to convert obj to str because PyArrow
+            # for col in objects.select_dtypes(include=['object']).columns:
+            #     objects[col] = objects[col].astype("str")
+            # st.dataframe(objects)
+
+            total_manual = len(objects)
+
+        st.write(f"Total number of lobsters: {total_pred}")
+        st.write(f"Total number of manual count: {total_manual}")
+
+        # Display total number of lobsters
+        st.header(f"Total number of lobsters: {total_pred + total_manual}")
 
 
 if __name__ == "__main__":
