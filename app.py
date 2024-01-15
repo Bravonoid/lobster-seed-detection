@@ -68,17 +68,21 @@ def main():
                 for prediction in predictions:
                     image = draw(image, prediction)
 
+                # Save the image
+                image.save("result.jpg")
+
             # Handle payload too large error
             except Exception as e:
                 if "Payload Too Large" in str(e):
                     st.error("Image too large. Please upload an image less than 3MB.")
 
+        background = Image.open("result.jpg")
         # Create a canvas component
         canvas_result = st_canvas(
-            fill_color="",
+            fill_color="#EA101077",
             stroke_width=2,
             stroke_color="#ffffff",
-            background_image=image,
+            background_image=background,
             update_streamlit=False,
             drawing_mode="rect",
             point_display_radius=1,
