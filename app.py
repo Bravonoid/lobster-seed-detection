@@ -73,6 +73,11 @@ def main():
                 if "Payload Too Large" in str(e):
                     st.error("Image too large. Please upload an image less than 3MB.")
 
+        # Convert PIL to numpy array
+        image = np.array(image.convert("RGB"))
+
+        image = Image.fromarray(image.astype("uint8"))
+
         # Create a canvas component
         canvas_result = st_canvas(
             fill_color="#EA101077",
