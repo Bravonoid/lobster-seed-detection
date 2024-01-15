@@ -78,7 +78,7 @@ def main():
             fill_color="#EA101077",
             stroke_width=2,
             stroke_color="#ffffff",
-            background_image=background,
+            background_image=image,
             update_streamlit=False,
             drawing_mode="rect",
             point_display_radius=1,
