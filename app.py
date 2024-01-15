@@ -81,7 +81,6 @@ def main():
             background_image=image,
             update_streamlit=False,
             drawing_mode="rect",
-            point_display_radius=1,
             key="canvas",
         )
 
