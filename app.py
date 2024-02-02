@@ -75,7 +75,7 @@ def main():
 
         # Create a canvas component
         canvas_result = st_canvas(
-            fill_color="#EA101077",
+            fill_color="rgba(250, 65, 65, 0.2)",
             stroke_width=2,
             stroke_color="#ffffff",
             background_image=image,
