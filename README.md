@@ -39,7 +39,6 @@ After training, the model demonstrates high accuracy in lobster seed detection a
 You can access the model detailed information [here](https://universe.roboflow.com/diki-bagastama-5ondf/lobster-seed-detection).
 
 ## Example Result
-Here is an example result image:
 ![Result Image](result.png)
 
 ## Functional Prototype
